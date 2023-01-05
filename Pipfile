@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+asgiref = "==3.6.0"
+"backports.zoneinfo" = "==0.2.1"
+django = "==4.1.5"
+djangorestframework = "==3.14.0"
+pytz = "==2022.7"
+sqlparse = "==0.4.3"
+confuse = "*"
+django-silk = "*"
+psycopg2-binary = "*"
+tqdm = "*"
+drf-spectacular = "*"
+black = "*"
+
+[dev-packages]
+flake8 = "*"
+factory-boy = "*"
+isort = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-mock = "*"
+pytest-lazy-fixture = "*"
+black = "*"
+
+[requires]
+python_version = "3.8"

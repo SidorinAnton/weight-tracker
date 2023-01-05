@@ -1,0 +1,375 @@
+openapi: 3.0.3
+info:
+  title: Weight Tracker API
+  version: 1.0.0
+  description: Tracker for weight and other metrics of body
+paths:
+  /api/user_goals/:
+    get:
+      operationId: user_goals_list
+      tags:
+      - user_goals
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserGoal'
+          description: ''
+    post:
+      operationId: user_goals_create
+      tags:
+      - user_goals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGoalCreateUpdate'
+          description: ''
+  /api/user_goals/{id}/:
+    put:
+      operationId: user_goals_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user_goals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserGoalCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGoalCreateUpdate'
+          description: ''
+    patch:
+      operationId: user_goals_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user_goals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserGoalCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserGoalCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserGoalCreateUpdate'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGoalCreateUpdate'
+          description: ''
+    delete:
+      operationId: user_goals_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user_goals
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/user_metrics/:
+    get:
+      operationId: user_metrics_list
+      tags:
+      - user_metrics
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserMetrics'
+          description: ''
+    post:
+      operationId: user_metrics_create
+      tags:
+      - user_metrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          description: ''
+  /api/user_metrics/{id}/:
+    put:
+      operationId: user_metrics_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user_metrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          description: ''
+    patch:
+      operationId: user_metrics_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user_metrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserMetricsCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserMetricsCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserMetricsCreateUpdate'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetricsCreateUpdate'
+          description: ''
+    delete:
+      operationId: user_metrics_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - user_metrics
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    PatchedUserGoalCreateUpdate:
+      type: object
+      properties:
+        user:
+          type: integer
+        weight_goal:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Ожидаемый вес (кг)
+        target_date:
+          type: string
+          format: date-time
+          title: Дата ожидаемого результата
+    PatchedUserMetricsCreateUpdate:
+      type: object
+      properties:
+        user:
+          type: integer
+        weight:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Вес (кг)
+        waist_circumference:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          title: Обхват талии
+        measurement_date:
+          type: string
+          format: date-time
+          title: Дата измерения
+    UserGoal:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+          title: Пользователь
+          readOnly: true
+        weight_goal:
+          type: integer
+          readOnly: true
+          title: Ожидаемый вес (кг)
+        target_date:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата ожидаемого результата
+      required:
+      - id
+      - target_date
+      - user_id
+      - weight_goal
+    UserGoalCreateUpdate:
+      type: object
+      properties:
+        user:
+          type: integer
+        weight_goal:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Ожидаемый вес (кг)
+        target_date:
+          type: string
+          format: date-time
+          title: Дата ожидаемого результата
+      required:
+      - user
+    UserMetrics:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+          title: Пользователь
+          readOnly: true
+        weight:
+          type: integer
+          readOnly: true
+          title: Вес (кг)
+        waist_circumference:
+          type: integer
+          readOnly: true
+          nullable: true
+          title: Обхват талии
+        measurement_date:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Дата измерения
+      required:
+      - id
+      - measurement_date
+      - user_id
+      - waist_circumference
+      - weight
+    UserMetricsCreateUpdate:
+      type: object
+      properties:
+        user:
+          type: integer
+        weight:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Вес (кг)
+        waist_circumference:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          title: Обхват талии
+        measurement_date:
+          type: string
+          format: date-time
+          title: Дата измерения
+      required:
+      - user
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

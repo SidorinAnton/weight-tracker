@@ -1,0 +1,12 @@
+common:
+  debug: true
+  login_url:
+  registration_url:
+  site_name: http://localhost:8000
+
+database:
+  name: weight_tracker
+  user: weight_tracker
+  password: weight_tracker
+  host: 127.0.0.1
+  port: 5432
