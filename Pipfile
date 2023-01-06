@@ -16,6 +16,8 @@ psycopg2-binary = "*"
 tqdm = "*"
 drf-spectacular = "*"
 black = "*"
+ipython = "*"
+pillow = "*"
 
 [dev-packages]
 flake8 = "*"
@@ -26,6 +28,7 @@ pytest-django = "*"
 pytest-mock = "*"
 pytest-lazy-fixture = "*"
 black = "*"
+freezegun = "*"
 
 [requires]
 python_version = "3.8"

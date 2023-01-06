@@ -17,4 +17,26 @@
 - Django Rest Framework
 - Create React App
 - PostgreSQL
-- Docker, docker-compose, VPS, Nginx
+- Docker, docker-compose
+- Ansible
+
+## Структура:
+
+- `backend/configuration`:
+    - Базовая конфигурация проекта на Django
+    - Энтрипойнты урлов
+    - Базовые классы DRF
+
+
+- `backend/tests`:
+    - Что-то похожее на интеграционные тесты
+
+
+- `backend/entrypoint`:
+    - Сервис авторизации (login / logout)
+
+
+- `backend/weight_tracker`:
+    - Основной АПИ сервис приложения
+    - Получение данных (метрики, цели)
+

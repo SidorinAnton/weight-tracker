@@ -5,9 +5,9 @@ from weight_tracker.user_metrics.views import UserMetricsViewSet
 
 router = SimpleRouter()
 
-router.register("user_metrics", UserMetricsViewSet, basename="user_metrics")
-router.register("user_goals", UserGoalViewSet, basename="user_metrics")
+router.register("user_metrics", UserMetricsViewSet, basename="user-metrics")
+router.register("user_goals", UserGoalViewSet, basename="user-goals")
 
 urlpatterns = [
-    path("api/", include(router.urls)),
+    path("", include(router.urls)),
 ]

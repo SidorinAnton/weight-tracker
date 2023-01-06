@@ -7,6 +7,19 @@ paths:
   /api/user_goals/:
     get:
       operationId: user_goals_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - user_goals
       security:
@@ -16,9 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserGoal'
+                $ref: '#/components/schemas/PaginatedUserGoalList'
           description: ''
     post:
       operationId: user_goals_create
@@ -125,6 +136,19 @@ paths:
   /api/user_metrics/:
     get:
       operationId: user_metrics_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - user_metrics
       security:
@@ -134,9 +158,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserMetrics'
+                $ref: '#/components/schemas/PaginatedUserMetricsList'
           description: ''
     post:
       operationId: user_metrics_create
@@ -242,6 +264,51 @@ paths:
           description: No response body
 components:
   schemas:
+    GoalTypeEnum:
+      enum:
+      - local
+      - global
+      type: string
+    PaginatedUserGoalList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserGoal'
+    PaginatedUserMetricsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserMetrics'
     PatchedUserGoalCreateUpdate:
       type: object
       properties:
@@ -252,9 +319,14 @@ components:
           maximum: 2147483647
           minimum: 0
           title: Ожидаемый вес (кг)
+        goal_type:
+          allOf:
+          - $ref: '#/components/schemas/GoalTypeEnum'
+          title: Тип цели
         target_date:
           type: string
-          format: date-time
+          format: date
+          nullable: true
           title: Дата ожидаемого результата
     PatchedUserMetricsCreateUpdate:
       type: object
@@ -274,7 +346,7 @@ components:
           title: Обхват талии
         measurement_date:
           type: string
-          format: date-time
+          format: date
           title: Дата измерения
     UserGoal:
       type: object
@@ -290,12 +362,19 @@ components:
           type: integer
           readOnly: true
           title: Ожидаемый вес (кг)
+        goal_type:
+          allOf:
+          - $ref: '#/components/schemas/GoalTypeEnum'
+          readOnly: true
+          title: Тип цели
         target_date:
           type: string
-          format: date-time
+          format: date
           readOnly: true
+          nullable: true
           title: Дата ожидаемого результата
       required:
+      - goal_type
       - id
       - target_date
       - user_id
@@ -310,11 +389,17 @@ components:
           maximum: 2147483647
           minimum: 0
           title: Ожидаемый вес (кг)
+        goal_type:
+          allOf:
+          - $ref: '#/components/schemas/GoalTypeEnum'
+          title: Тип цели
         target_date:
           type: string
-          format: date-time
+          format: date
+          nullable: true
           title: Дата ожидаемого результата
       required:
+      - goal_type
       - user
     UserMetrics:
       type: object
@@ -337,7 +422,7 @@ components:
           title: Обхват талии
         measurement_date:
           type: string
-          format: date-time
+          format: date
           readOnly: true
           title: Дата измерения
       required:
@@ -364,7 +449,7 @@ components:
           title: Обхват талии
         measurement_date:
           type: string
-          format: date-time
+          format: date
           title: Дата измерения
       required:
       - user

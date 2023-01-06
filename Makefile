@@ -15,6 +15,11 @@ start-db:
 	docker-compose up -d
 
 
+# Run tests
+runtests:
+	PYTHONPATH=. pytest backend/tests $(params)
+
+
 # Start local project
 runserver:
 	PYTHONPATH=./backend ./backend/manage.py runserver

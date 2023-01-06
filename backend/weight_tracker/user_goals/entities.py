@@ -9,5 +9,6 @@ class UserGoalSerializer(serializers.ModelSerializer):
             "id",
             "user_id",
             "weight_goal",
+            "goal_type",
             "target_date",
         )

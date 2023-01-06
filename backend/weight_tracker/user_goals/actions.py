@@ -13,5 +13,6 @@ class UserGoalCreateUpdateSerializer(serializers.ModelSerializer):
         fields = (
             "user",
             "weight_goal",
+            "goal_type",
             "target_date",
         )
