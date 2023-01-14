@@ -1,26 +1,26 @@
-from django.contrib.auth.models import User
+from django.db import transaction
 from rest_framework import serializers
-from rest_framework.exceptions import PermissionDenied
 from weight_tracker.models import UserMetrics
+from weight_tracker.user_metrics.entities import UserMetricsSerializer
 
 
-class UserMetricsCreateUpdateSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-
+class UserMetricsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserMetrics
         fields = (
-            "user",
             "weight",
             "waist_circumference",
             "measurement_date",
         )
 
-    def validate(self, attrs):
-        request_user = self.context["request"].user
-        user = attrs["user"]
+    def to_representation(self, instance):
+        return UserMetricsSerializer().to_representation(instance)
 
-        if request_user != user:
-            raise PermissionDenied
+    def create(self, validated_data):
+        data = {**validated_data, "user": self.context["request"].user}
 
-        return attrs
+        with transaction.atomic():
+            user_metrics = UserMetrics(**data)
+            user_metrics.save()
+
+        return user_metrics

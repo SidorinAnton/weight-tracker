@@ -20,7 +20,6 @@ def test_post_not_authenticated(drf_client):
 
 def test_post_ok(drf_client, authenticate, user):
     data = {
-        "user": user.id,
         "weight_goal": 10,
         "goal_type": "local",
         "target_date": datetime.date.today(),
@@ -31,44 +30,36 @@ def test_post_ok(drf_client, authenticate, user):
 
     assert resp.status_code == 201, resp.json()
     assert resp.json() == {
-        "user": user.id,
+        "id": user.goals.first().id,
+        "user_id": user.id,
         "weight_goal": 10,
         "goal_type": "local",
         "target_date": str(datetime.date.today()),
     }
 
 
-def test_post_not_valid_user_id(drf_client, authenticate, user):
-    data = {
-        "user": 10,
-        "weight_goal": 10,
-        "goal_type": "local",
-        "target_date": datetime.date.today(),
-    }
-
+def test_post_without_data(drf_client, authenticate, user):
     with authenticate(user):
-        resp = drf_client.post(url(), data=data)
+        resp = drf_client.post(url(), data={})
 
     assert resp.status_code == 400, resp.json()
-    assert resp.json() == {
-        "user": [
-            'Недопустимый первичный ключ "10" - объект не существует.',
-        ]
-    }
+    assert resp.json() == {"goal_type": ["Обязательное поле."]}
 
 
-def test_post_another_user_id(drf_client, authenticate, user, user_2):
+def test_post_without_date(drf_client, authenticate, user):
     data = {
-        "user": user_2.id,
-        "weight_goal": 10,
         "goal_type": "local",
-        "target_date": datetime.date.today(),
+        "target_date": "",
     }
 
     with authenticate(user):
         resp = drf_client.post(url(), data=data)
 
-    assert resp.status_code == 403, resp.json()
+    assert resp.status_code == 201, resp.json()
     assert resp.json() == {
-        "detail": "У вас недостаточно прав для выполнения данного действия.",
+        "id": user.goals.first().id,
+        "user_id": user.id,
+        "weight_goal": 0,
+        "goal_type": "local",
+        "target_date": None,
     }

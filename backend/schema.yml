@@ -39,13 +39,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserGoalCreateUpdate'
+              $ref: '#/components/schemas/UserGoalCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserGoalCreateUpdate'
+              $ref: '#/components/schemas/UserGoalCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserGoalCreateUpdate'
+              $ref: '#/components/schemas/UserGoalCreate'
         required: true
       security:
       - cookieAuth: []
@@ -54,70 +54,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserGoalCreateUpdate'
+                $ref: '#/components/schemas/UserGoal'
           description: ''
   /api/user_goals/{id}/:
-    put:
-      operationId: user_goals_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - user_goals
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserGoalCreateUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UserGoalCreateUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UserGoalCreateUpdate'
-        required: true
-      security:
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserGoalCreateUpdate'
-          description: ''
-    patch:
-      operationId: user_goals_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - user_goals
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedUserGoalCreateUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUserGoalCreateUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedUserGoalCreateUpdate'
-      security:
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserGoalCreateUpdate'
-          description: ''
     delete:
       operationId: user_goals_destroy
       parameters:
@@ -168,14 +107,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+              $ref: '#/components/schemas/UserMetricsCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserMetricsCreateUpdate'
+              $ref: '#/components/schemas/UserMetricsCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserMetricsCreateUpdate'
-        required: true
+              $ref: '#/components/schemas/UserMetricsCreate'
       security:
       - cookieAuth: []
       responses:
@@ -183,70 +121,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserMetricsCreateUpdate'
+                $ref: '#/components/schemas/UserMetrics'
           description: ''
   /api/user_metrics/{id}/:
-    put:
-      operationId: user_metrics_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - user_metrics
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserMetricsCreateUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/UserMetricsCreateUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UserMetricsCreateUpdate'
-        required: true
-      security:
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserMetricsCreateUpdate'
-          description: ''
-    patch:
-      operationId: user_metrics_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - user_metrics
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedUserMetricsCreateUpdate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUserMetricsCreateUpdate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedUserMetricsCreateUpdate'
-      security:
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserMetricsCreateUpdate'
-          description: ''
     delete:
       operationId: user_metrics_destroy
       parameters:
@@ -309,45 +186,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserMetrics'
-    PatchedUserGoalCreateUpdate:
-      type: object
-      properties:
-        user:
-          type: integer
-        weight_goal:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          title: Ожидаемый вес (кг)
-        goal_type:
-          allOf:
-          - $ref: '#/components/schemas/GoalTypeEnum'
-          title: Тип цели
-        target_date:
-          type: string
-          format: date
-          nullable: true
-          title: Дата ожидаемого результата
-    PatchedUserMetricsCreateUpdate:
-      type: object
-      properties:
-        user:
-          type: integer
-        weight:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          title: Вес (кг)
-        waist_circumference:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          nullable: true
-          title: Обхват талии
-        measurement_date:
-          type: string
-          format: date
-          title: Дата измерения
     UserGoal:
       type: object
       properties:
@@ -379,11 +217,9 @@ components:
       - target_date
       - user_id
       - weight_goal
-    UserGoalCreateUpdate:
+    UserGoalCreate:
       type: object
       properties:
-        user:
-          type: integer
         weight_goal:
           type: integer
           maximum: 2147483647
@@ -400,7 +236,6 @@ components:
           title: Дата ожидаемого результата
       required:
       - goal_type
-      - user
     UserMetrics:
       type: object
       properties:
@@ -431,11 +266,9 @@ components:
       - user_id
       - waist_circumference
       - weight
-    UserMetricsCreateUpdate:
+    UserMetricsCreate:
       type: object
       properties:
-        user:
-          type: integer
         weight:
           type: integer
           maximum: 2147483647
@@ -451,8 +284,6 @@ components:
           type: string
           format: date
           title: Дата измерения
-      required:
-      - user
   securitySchemes:
     cookieAuth:
       type: apiKey

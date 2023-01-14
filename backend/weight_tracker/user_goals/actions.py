@@ -1,28 +1,26 @@
-from django.contrib.auth.models import User
+from django.db import transaction
 from rest_framework import serializers
-from rest_framework.exceptions import PermissionDenied
 from weight_tracker.models import UserGoal
+from weight_tracker.user_goals.entities import UserGoalSerializer
 
 
-class UserGoalCreateUpdateSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.prefetch_related("goals").all(),
-    )
-
+class UserGoalCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserGoal
         fields = (
-            "user",
             "weight_goal",
             "goal_type",
             "target_date",
         )
 
-    def validate(self, attrs):
-        request_user = self.context["request"].user
-        user = attrs["user"]
+    def to_representation(self, instance):
+        return UserGoalSerializer().to_representation(instance)
 
-        if request_user != user:
-            raise PermissionDenied
+    def create(self, validated_data):
+        data = {**validated_data, "user": self.context["request"].user}
 
-        return attrs
+        with transaction.atomic():
+            user_goals = UserGoal(**data)
+            user_goals.save()
+
+        return user_goals

@@ -1,6 +1,14 @@
 params := $(wordlist 2,100,$(MAKECMDGOALS))
 
 # Styles
+isort:
+	isort backend/
+
+black:
+	black backend/
+
+fix-style: isort black
+
 check-isort:
 	isort --check-only --diff backend/
 
@@ -22,7 +30,7 @@ runtests:
 
 # Start local project
 runserver:
-	PYTHONPATH=./backend ./backend/manage.py runserver
+	PYTHONPATH=./backend ./backend/manage.py runserver 127.0.0.1:5000
 
 
 # Manage project

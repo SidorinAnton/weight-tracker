@@ -20,7 +20,6 @@ def test_post_not_authenticated(drf_client):
 
 def test_post_ok(drf_client, authenticate, user):
     data = {
-        "user": user.id,
         "weight": 1,
         "waist_circumference": 1,
         "measurement_date": datetime.date.today(),
@@ -31,44 +30,42 @@ def test_post_ok(drf_client, authenticate, user):
 
     assert resp.status_code == 201, resp.json()
     assert resp.json() == {
-        "measurement_date": datetime.date.today().strftime("%Y-%m-%d"),
-        "user": user.id,
-        "waist_circumference": 1,
+        "id": user.metrics.first().id,
+        "user_id": user.id,
         "weight": 1,
+        "waist_circumference": 1,
+        "measurement_date": str(datetime.date.today()),
     }
 
 
-def test_post_not_valid_user_id(drf_client, authenticate, user):
+def test_post_without_date(drf_client, authenticate, user):
     data = {
-        "user": 10,
         "weight": 1,
         "waist_circumference": 1,
-        "measurement_date": datetime.date.today(),
     }
 
     with authenticate(user):
         resp = drf_client.post(url(), data=data)
 
-    assert resp.status_code == 400, resp.json()
+    assert resp.status_code == 201, resp.json()
     assert resp.json() == {
-        "user": [
-            'Недопустимый первичный ключ "10" - объект не существует.',
-        ]
-    }
-
-
-def test_post_another_user_id(drf_client, authenticate, user, user_2):
-    data = {
-        "user": user_2.id,
+        "id": user.metrics.first().id,
+        "user_id": user.id,
         "weight": 1,
         "waist_circumference": 1,
-        "measurement_date": datetime.date.today(),
+        "measurement_date": str(datetime.date.today()),
     }
 
-    with authenticate(user):
-        resp = drf_client.post(url(), data=data)
 
-    assert resp.status_code == 403, resp.json()
+def test_post_without_data(drf_client, authenticate, user):
+    with authenticate(user):
+        resp = drf_client.post(url(), data={})
+
+    assert resp.status_code == 201, resp.json()
     assert resp.json() == {
-        "detail": "У вас недостаточно прав для выполнения данного действия.",
+        "id": user.metrics.first().id,
+        "user_id": user.id,
+        "weight": 0,
+        "waist_circumference": None,
+        "measurement_date": str(datetime.date.today()),
     }
