@@ -18,6 +18,7 @@ drf-spectacular = "*"
 black = "*"
 ipython = "*"
 pillow = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 flake8 = "*"

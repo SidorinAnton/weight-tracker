@@ -3,6 +3,4 @@ from django.middleware.csrf import get_token
 
 
 def get_csrf(request):
-    response = JsonResponse({"detail": "CSRF cookie set"})
-    response["X-CSRFToken"] = get_token(request)
-    return response
+    return JsonResponse({"csrf-token": get_token(request)})

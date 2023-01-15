@@ -139,6 +139,16 @@ paths:
       responses:
         '204':
           description: No response body
+  /is_authenticated/:
+    get:
+      operationId: is_authenticated_retrieve
+      tags:
+      - is_authenticated
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
   /login/:
     post:
       operationId: login_create
