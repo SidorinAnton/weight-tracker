@@ -6,7 +6,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(("entrypoint.urls", "entrypoint"), namespace="entrypoint")),
-    path("api/", include(("weight_tracker.urls", "weight_tracker"), namespace="weight_tracker")),
+    path("api/v1/", include(("weight_tracker.urls", "weight_tracker"), namespace="weight_tracker")),
 ]
 
 

@@ -20,6 +20,11 @@ DEBUG = config["common"]["debug"].get(True)
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://localhost"]
 
+CSRF_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_SAMESITE = "Strict"
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

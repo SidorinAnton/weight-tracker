@@ -9,13 +9,13 @@ black:
 
 fix-style: isort black
 
-check-isort:
+isort-check:
 	isort --check-only --diff backend/
 
-check-flake8:
+flake8-check:
 	flake8 backend/
 
-check-style: check-flake8 check-isort
+check-style: flake8-check isort-check
 
 
 # Start databases

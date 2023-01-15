@@ -4,9 +4,9 @@ info:
   version: 1.0.0
   description: Tracker for weight and other metrics of body
 paths:
-  /api/user_goals/:
+  /api/v1/user_goals/:
     get:
-      operationId: user_goals_list
+      operationId: api_v1_user_goals_list
       parameters:
       - name: limit
         required: false
@@ -21,7 +21,7 @@ paths:
         schema:
           type: integer
       tags:
-      - user_goals
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -32,9 +32,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedUserGoalList'
           description: ''
     post:
-      operationId: user_goals_create
+      operationId: api_v1_user_goals_create
       tags:
-      - user_goals
+      - api
       requestBody:
         content:
           application/json:
@@ -56,9 +56,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserGoal'
           description: ''
-  /api/user_goals/{id}/:
+  /api/v1/user_goals/{id}/:
     delete:
-      operationId: user_goals_destroy
+      operationId: api_v1_user_goals_destroy
       parameters:
       - in: path
         name: id
@@ -66,15 +66,15 @@ paths:
           type: integer
         required: true
       tags:
-      - user_goals
+      - api
       security:
       - cookieAuth: []
       responses:
         '204':
           description: No response body
-  /api/user_metrics/:
+  /api/v1/user_metrics/:
     get:
-      operationId: user_metrics_list
+      operationId: api_v1_user_metrics_list
       parameters:
       - name: limit
         required: false
@@ -89,7 +89,7 @@ paths:
         schema:
           type: integer
       tags:
-      - user_metrics
+      - api
       security:
       - cookieAuth: []
       responses:
@@ -100,9 +100,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedUserMetricsList'
           description: ''
     post:
-      operationId: user_metrics_create
+      operationId: api_v1_user_metrics_create
       tags:
-      - user_metrics
+      - api
       requestBody:
         content:
           application/json:
@@ -123,9 +123,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserMetrics'
           description: ''
-  /api/user_metrics/{id}/:
+  /api/v1/user_metrics/{id}/:
     delete:
-      operationId: user_metrics_destroy
+      operationId: api_v1_user_metrics_destroy
       parameters:
       - in: path
         name: id
@@ -133,7 +133,40 @@ paths:
           type: integer
         required: true
       tags:
-      - user_metrics
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /logout/:
+    get:
+      operationId: logout_retrieve
+      tags:
+      - logout
       security:
       - cookieAuth: []
       responses:
@@ -146,6 +179,18 @@ components:
       - local
       - global
       type: string
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
     PaginatedUserGoalList:
       type: object
       properties:
