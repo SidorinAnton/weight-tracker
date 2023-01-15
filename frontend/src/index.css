@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap");
+
+:root {
+  --font-primary: "Roboto Mono", monospace;
+  --font-accent: "Rubik", sans-serif;
+  --color-background: #edfae9ec;
+  --color-accent: #0bc43d;
+  --color-black: #131711;
+  --color-blue: #1677ff;
+  --color-orange: #ef5b3c;
+  --color-grey: #8a8a8a;
+  --color-grey-light: #e5e5e5;
+  --color-white: #fff;
+  --focus-border: 3px solid var(--color-orange);
+  --container-width: 1075px;
+}
+
+*:not(svg *) {
+  all: unset;
+  display: revert;
+}
+
+*:focus-visible {
+  outline: var(--focus-border);
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-background);
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--color-black);
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: var(--container-width);
+}
+
+/*@media (max-width: 1020px) {*/
+/*    .title {*/
+/*        font-size: 30px;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 660px) {*/
+/*    .title {*/
+/*        font-size: 20px;*/
+/*    }*/
+/*}*/

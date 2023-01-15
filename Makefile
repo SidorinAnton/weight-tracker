@@ -1,4 +1,7 @@
 params := $(wordlist 2,100,$(MAKECMDGOALS))
+pwd := $(shell pwd)
+
+# =============== BACKEND ===============
 
 # Styles
 isort:
@@ -41,6 +44,11 @@ manage:
 # Generate documentation
 generate-schema:
 	PYTHONPATH=./backend ./backend/manage.py spectacular --file ./backend/schema.yml
+
+
+# =============== Frontend ===============
+front-start:
+	npm start --prefix $(pwd)/frontend
 
 
 %:

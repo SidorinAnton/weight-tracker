@@ -1,0 +1,26 @@
+.header {
+  margin-bottom: 50px;
+  background-color: var(--color-accent);
+}
+
+.header__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 30px;
+}
+
+.header__title {
+  font-weight: bold;
+  color: var(--color-white);
+  font-size: 25px;
+}
+
+.header__logout-button {
+  cursor: pointer;
+}
+
+.header__logout-icon {
+  font-size: 25px;
+  fill: var(--color-white);
+}

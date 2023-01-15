@@ -1,0 +1,22 @@
+.app__loader-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+}
+
+.app__loader {
+  font-size: 40px;
+  fill: var(--color-accent);
+  animation: loader-rotate 500ms linear infinite;
+}
+
+@keyframes loader-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
