@@ -1,0 +1,15 @@
+.weight-data {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  width: 600px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.weight-data__value {
+  color: var(--color-accent);
+  font-weight: 800;
+  text-shadow: 0 0 1px var(--color-black);
+}

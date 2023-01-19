@@ -2,32 +2,30 @@ import React, { FC } from "react";
 import "./WeightGraph.css";
 import ReactApexChart from "react-apexcharts";
 import ru from "apexcharts/dist/locales/ru.json";
+import { IUserMetrics } from "../../../../api/userMetrics";
+import { toTimestamp } from "../../../../utils/time";
+import { IUserGoals } from "../../../../api/userGoals";
 
 interface Props {
-  weights: number[];
-  measurementDates: number[];
+  metrics: IUserMetrics[];
+  goals: IUserGoals[];
 }
 
-export const WeightGraph: FC<Props> = ({ weights, measurementDates }) => {
+export const WeightGraph: FC<Props> = ({ metrics, goals }) => {
+  const data = metrics.map(({ measurement_date, weight }) => {
+    return {
+      x: toTimestamp(measurement_date),
+      y: weight,
+    };
+  });
+  const globalGoals = goals.filter((goal) => goal.goal_type === "global");
+  const localGoals = goals.filter((goal) => goal.goal_type === "local");
+
   const state = {
     series: [
       {
-        // [x, y]
-        // data: [[1324508400000, 34], [1324594800000, 54], [1326236400000, 43]],
-        data: [
-          { x: 1324508400000, y: 34 },
-          { x: 1324594800000, y: 54 },
-          { x: 1326236400000, y: 43 },
-        ],
-      },
-      {
-        // [x, y]
-        // data: [[1324508400000, 34], [1324594800000, 54], [1326236400000, 43]],
-        data: [
-          { x: 1324508400000, y: 150 },
-          { x: 1324594800000, y: 110 },
-          { x: 1326236400000, y: 120 },
-        ],
+        name: "Вес",
+        data,
       },
     ],
     options: {
@@ -37,66 +35,53 @@ export const WeightGraph: FC<Props> = ({ weights, measurementDates }) => {
         type: "line",
         id: "weight",
       },
-      annotations: {
-        yaxis: [
-          {
-            y: 40,
-            borderColor: "#00E396",
-            label: {
-              borderColor: "#00E396",
-              style: {
-                color: "#fff",
-                background: "#00E396",
-              },
-              text: "Глобальная цель",
-            },
-          },
-        ],
-        xaxis: [
-          {
-            x: 1325509400000,
-            strokeDashArray: 0,
-            borderColor: "#775DD0",
-            label: {
-              borderColor: "#775DD0",
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-              text: "X-line",
-            },
-          },
-        ],
-        points: [
-          {
-            x: 1325509400000,
-            y: 50,
-            marker: {
-              size: 8,
-              fillColor: "#fff",
-              strokeColor: "red",
-              radius: 2,
-              // cssClass: 'apexcharts-custom-class'
-            },
-            label: {
-              borderColor: "#FF4560",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#FF4560",
-              },
-
-              text: "Point Annotation",
-            },
-          },
-        ],
+      colors: ["#0bc43d"],
+      markers: {
+        size: 5,
       },
-      // dataLabels: {
-      //     enabled: false
-      // },
-      // stroke: {
-      //     curve: 'straight'
-      // },
+      annotations: {
+        yaxis: globalGoals.map((goal) => {
+          return {
+            y: goal.weight_goal,
+            strokeDashArray: 2,
+            borderColor: "#1677ff",
+            label: {
+              borderColor: "#1677ff",
+              style: {
+                color: "#fff",
+                background: "#1677ff",
+              },
+              text: `Цель: ${goal.weight_goal} кг`,
+            },
+          };
+        }),
+        xaxis: localGoals.map((goal) => {
+          return {
+            x: toTimestamp(goal.target_date),
+            strokeDashArray: 5,
+            borderColor: "#ef5b3c",
+          };
+        }),
+        points: localGoals.map((goal) => {
+          return {
+            x: toTimestamp(goal.target_date),
+            y: goal.weight_goal,
+            marker: {
+              size: 5,
+              fillColor: "#edfae9ec",
+              strokeColor: "#ef5b3c",
+            },
+            label: {
+              borderColor: "#ef5b3c",
+              style: {
+                color: "#fff",
+                background: "#ef5b3c",
+              },
+              text: `${goal.weight_goal} кг`,
+            },
+          };
+        }),
+      },
       grid: {
         padding: {
           right: 30,
@@ -104,29 +89,34 @@ export const WeightGraph: FC<Props> = ({ weights, measurementDates }) => {
           left: 20,
         },
       },
-      // title: {
-      //     text: 'Line with Annotations',
-      //     align: 'left'
-      // },
-      // labels: ..,
       xaxis: {
-        // categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-        // type: 'numeric',
         type: "datetime",
+        hideOverlappingLabels: true,
+      },
+      yaxis: {
+        title: {
+          text: "Вес, кг",
+          offsetX: -10,
+          style: {
+            fontSize: "14px",
+            fontFamily: "Roboto Mono, monospace",
+            fontWeight: 700,
+          },
+        },
       },
     },
   };
 
   return (
-    <div>
-      <h2>Динамика изменения веса</h2>
-      <div style={{ width: "800px" }}>
+    <div className="weight-graph">
+      <h2 className="weight-graph__title">Динамика изменения веса</h2>
+      <div className="weight-graph__wrapper">
         <ReactApexChart
           // @ts-ignore
           options={state.options}
           series={state.series}
           type="line"
-          height={450}
+          height={370}
         />
       </div>
     </div>

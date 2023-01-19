@@ -1,15 +1,15 @@
-.weight-graph {
+.waist-graph {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.weight-graph__title {
+.waist-graph__title {
   font-size: 20px;
   font-weight: bold;
 }
 
-.weight-graph__wrapper {
+.waist-graph__wrapper {
   width: 900px;
   overflow: hidden;
 }

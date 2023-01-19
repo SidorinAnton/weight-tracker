@@ -1,25 +1,25 @@
-import { Button, DatePicker, Form, InputNumber } from "antd";
+import { Button, DatePicker, Form, InputNumber, Select } from "antd";
 import React, { FC } from "react";
-import { ApiPostUserMetrics, IUserMetrics } from "../../../../api/userMetrics";
 import { toBackendDate } from "../../../../utils/time";
 import locale from "antd/es/date-picker/locale/ru_RU";
+import { ApiPostUserGoals, IUserGoals } from "../../../../api/userGoals";
 
 interface Props {
   closeModal: () => void;
-  setMetrics: React.Dispatch<React.SetStateAction<IUserMetrics[] | null>>;
+  setGoals: React.Dispatch<React.SetStateAction<IUserGoals[] | null>>;
 }
 
-export const MetricsForm: FC<Props> = ({ closeModal, setMetrics }) => {
+export const GoalsForm: FC<Props> = ({ closeModal, setGoals }) => {
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
-    const { weight, waistCircumference: waist_circumference, date } = values;
-    const res = await ApiPostUserMetrics({
-      weight,
-      waist_circumference,
-      measurement_date: toBackendDate(date),
+    const { weight: weight_goal, goalType: goal_type, date } = values;
+    const res = await ApiPostUserGoals({
+      weight_goal,
+      goal_type,
+      target_date: toBackendDate(date),
     });
-    setMetrics((prevState) => {
+    setGoals((prevState) => {
       if (prevState) {
         return [...prevState, res];
       }
@@ -30,12 +30,12 @@ export const MetricsForm: FC<Props> = ({ closeModal, setMetrics }) => {
   };
 
   const layout = {
-    labelCol: { span: 10 },
+    labelCol: { span: 9 },
     wrapperCol: { span: 12 },
   };
 
   return (
-    <Form {...layout} form={form} name="metrics-form" onFinish={onFinish}>
+    <Form {...layout} form={form} name="goals-form" onFinish={onFinish}>
       <Form.Item
         name="weight"
         label="Вес"
@@ -53,11 +53,22 @@ export const MetricsForm: FC<Props> = ({ closeModal, setMetrics }) => {
       </Form.Item>
 
       <Form.Item
-        name="waistCircumference"
-        label="Обхват талии"
-        rules={[{ type: "number", min: 0, max: 500 }]}
+        name="goalType"
+        label="Статус"
+        rules={[{ required: true, message: "Это поле обязательно" }]}
       >
-        <InputNumber />
+        <Select
+          options={[
+            {
+              value: "local",
+              label: "Локальная цель",
+            },
+            {
+              value: "global",
+              label: "Глобальная цель",
+            },
+          ]}
+        />
       </Form.Item>
 
       <Form.Item name="date" label="Дата">

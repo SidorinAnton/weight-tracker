@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: 40px;
+  overflow: hidden;
 }
 
 .metrics__controls {
@@ -30,9 +31,4 @@
 .metrics-button-control__icon {
   font-size: 25px;
   fill: var(--color-accent);
-}
-.metrics-button-control__text {
-}
-
-.metrics__graphs {
 }

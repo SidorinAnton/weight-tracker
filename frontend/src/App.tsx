@@ -1,10 +1,10 @@
-import { Loading3QuartersOutlined } from "@ant-design/icons";
 import React, { FC, useEffect, useState } from "react";
 import "./App.css";
 import { ApiIsAuthenticated } from "./api/enrypoint";
 import { Header } from "./components/Header/Header";
 import { Auth } from "./components/Auth/Auth";
 import { Metrics } from "./components/Metrics/Metrics";
+import { Loader } from "./components/Loader/Loader";
 
 export const App: FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -24,9 +24,7 @@ export const App: FC = () => {
   if (isAuthenticated === null) {
     return (
       <div className="app">
-        <div className="app__loader-wrapper container">
-          <Loading3QuartersOutlined className="app__loader" />
-        </div>
+        <Loader />
       </div>
     );
   }
