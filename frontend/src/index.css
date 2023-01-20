@@ -4,7 +4,7 @@
 :root {
   --font-primary: "Roboto Mono", monospace;
   /*--font-accent: "Rubik", sans-serif;*/
-  --color-background: #edfae9ec;
+  --color-background: #f6fbf5;
   --color-accent: #0bc43d;
   --color-black: #131711;
   --color-blue: #1677ff;
@@ -39,6 +39,16 @@ body {
   margin: 0 auto;
   padding: 0 20px;
   max-width: var(--container-width);
+}
+
+.ant-table-thead .ant-table-cell {
+  background-color: var(--color-accent) !important;
+  color: var(--color-white) !important;
+}
+
+.ant-table table {
+  font-size: 16px;
+  font-family: var(--font-primary);
 }
 
 /*@media (max-width: 1020px) {*/

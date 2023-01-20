@@ -1,29 +1,20 @@
-import { PlusCircleOutlined } from "@ant-design/icons";
 import React, { FC, useEffect, useState } from "react";
 import "./Metrics.css";
-import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
-import { MetricsForm } from "./components/Forms/MetricsForm";
 import { WeightGraph } from "./components/WeightGraph/WeightGraph";
 import { ApiGetUserMetrics, IUserMetrics } from "../../api/userMetrics";
 import { Loader } from "../Loader/Loader";
 import { ApiGetUserGoals, IUserGoals } from "../../api/userGoals";
-import { GoalsForm } from "./components/Forms/GoalForm";
 import { WaistGraph } from "./components/WaistGraph/WaistGraph";
 import { MetricsData } from "./components/MetricsData/MetricsData";
+import { MetricButtonControls } from "./components/MetricButtonControls/MetricButtonControls";
+import { usePageContext } from "../Context/Context";
+import { MetricsTable } from "./components/MetricsTable/MetricsTable";
+import { GoalsTable } from "./components/GoalsTable/GoalsTable";
 
 export const Metrics: FC = () => {
+  const { page } = usePageContext();
   const [metrics, setMetrics] = useState<null | IUserMetrics[]>(null);
   const [goals, setGoals] = useState<null | IUserGoals[]>(null);
-
-  const [weightModalOpen, setWeightModalOpen] = useState(false);
-  const [goalModalOpen, setGoalModalOpen] = useState(false);
-
-  const weightModalClose = () => {
-    setWeightModalOpen(false);
-  };
-  const goalModalClose = () => {
-    setGoalModalOpen(false);
-  };
 
   useEffect(() => {
     ApiGetUserMetrics().then((res) => setMetrics(res.results));
@@ -40,50 +31,42 @@ export const Metrics: FC = () => {
 
   return (
     <section className="metrics container">
-      <aside className="metrics__controls">
-        <button
-          className="metrics-button-control"
-          onClick={() => setWeightModalOpen(true)}
-        >
-          <PlusCircleOutlined className="metrics-button-control__icon" />
-          <span className="metrics-button-control__text">Добавить Вес</span>
-        </button>
-        <button
-          className="metrics-button-control"
-          onClick={() => setGoalModalOpen(true)}
-        >
-          <PlusCircleOutlined className="metrics-button-control__icon" />
-          <span className="metrics-button-control__text">Добавить Цель</span>
-        </button>
-      </aside>
-
-      <article className="metrics__data">
-        <MetricsData metrics={metrics} goals={goals} />
+      <article className="metrics__controls">
+        <MetricButtonControls setMetrics={setMetrics} setGoals={setGoals} />
       </article>
 
-      <article className="metrics__metrics-graphs">
-        <WeightGraph metrics={metrics} goals={goals} />
-      </article>
+      {page === "main" && (
+        <>
+          <article className="metrics__data">
+            <MetricsData metrics={metrics} goals={goals} />
+          </article>
 
-      <article className="metrics__waist-graphs">
-        <WaistGraph metrics={metrics} />
-      </article>
+          <article className="metrics__metrics-graphs">
+            <WeightGraph metrics={metrics} goals={goals} />
+          </article>
 
-      <ModalWrapper
-        opened={weightModalOpen}
-        onCancel={weightModalClose}
-        title="Добавить вес"
-      >
-        <MetricsForm closeModal={weightModalClose} setMetrics={setMetrics} />
-      </ModalWrapper>
+          <article className="metrics__waist-graphs">
+            <WaistGraph metrics={metrics} />
+          </article>
+        </>
+      )}
 
-      <ModalWrapper
-        opened={goalModalOpen}
-        onCancel={goalModalClose}
-        title="Добавить цель"
-      >
-        <GoalsForm closeModal={goalModalClose} setGoals={setGoals} />
-      </ModalWrapper>
+      {page === "table" && (
+        <>
+          <article className="metrics__data">
+            <MetricsData metrics={metrics} goals={goals} />
+          </article>
+          <article className="metrics__table">
+            <MetricsTable metrics={metrics} setMetrics={setMetrics} />
+          </article>
+        </>
+      )}
+
+      {page === "goals" && (
+        <article className="">
+          <GoalsTable goals={goals} setGoals={setGoals} />
+        </article>
+      )}
     </section>
   );
 };

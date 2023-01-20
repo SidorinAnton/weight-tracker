@@ -46,6 +46,8 @@ export const WeightGraph: FC<Props> = ({ metrics, goals }) => {
             strokeDashArray: 2,
             borderColor: "#1677ff",
             label: {
+              position: "left",
+              offsetX: 50,
               borderColor: "#1677ff",
               style: {
                 color: "#fff",

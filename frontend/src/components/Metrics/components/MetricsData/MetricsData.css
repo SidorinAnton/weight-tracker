@@ -4,8 +4,15 @@
   grid-template-rows: repeat(2, 1fr);
   gap: 10px;
   width: 600px;
-  text-align: center;
   font-weight: 400;
+}
+
+.weight-data__left-col {
+  justify-self: left;
+}
+
+.weight-data__right-col {
+  justify-self: right;
 }
 
 .weight-data__value {

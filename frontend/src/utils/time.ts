@@ -12,3 +12,14 @@ export const toBackendDate = (date: Date | null): string | undefined => {
   }
   return date.toISOString().split("T")[0];
 };
+
+export const parseBackendDateToString = (strDate: string): string => {
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const date = new Date(strDate);
+  // @ts-ignore
+  return new Intl.DateTimeFormat("ru-RU", options).format(date);
+};
