@@ -1,30 +1,45 @@
-- name: Wight-tracker -- Copy
+- name: Wight-tracker
   hosts: vm-karpov
   become: true
 
   tasks:
-    - name: Copy backend
+    - name: Clone repo
+      git:
+        repo: git@github.com:SidorinAnton/weight-tracker.git
+        dest: /home/anton/weight-tracker
+        force: yes
+
+    - name: Copy vault password
       copy:
-        src: ./backend
-        dest: /home/anton/weight_tracker/
+        src: vault.txt
+        dest: /home/anton/weight-tracker/
 
+    - name: Decrypt files
+      shell:
+        chdir: /home/anton/weight-tracker
+        cmd: ansible-vault decrypt docker-compose.yml inventory configs/weight-tracker.yaml configs/ssl
 
+#    - name: Get details of all images
+#      docker_host_info:
+#        images: yes
+#        verbose_output: yes
+#      register: image_info
+#
+#    - name: Remove images
+#      docker_image:
+#        state: absent
+#        name: "{{ item }}"
+#      loop: "{{image_info.images}}"
 
+#    - name: Docker compose up
+#      docker_compose:
+#        project_src: /home/anton/weight-tracker
+#        build: true
+#        restarted: true
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - name: Docker-compose
+      shell:
+        chdir: /home/anton/weight-tracker
+        cmd: docker-compose up -d
 
 

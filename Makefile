@@ -52,8 +52,11 @@ front-start:
 
 
 # =============== CERTBOT ===============
-certbot-certonly:
+certbot-certonly-dry:
 	docker-compose run --rm certbot certonly -m antonsidorin@list.ru --webroot --webroot-path /var/www/certbot/ --dry-run -d antonsvm.karpovdns.net -d www.antonsvm.karpovdns.net
+
+certbot-certonly:
+	docker-compose run --rm certbot certonly -m antonsidorin@list.ru --webroot --webroot-path /var/www/certbot/ -d antonsvm.karpovdns.net -d www.antonsvm.karpovdns.net
 
 certbot-renew:
 	docker-compose run --rm certbot renew
