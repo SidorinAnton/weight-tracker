@@ -19,6 +19,11 @@ black = "*"
 ipython = "*"
 pillow = "*"
 django-cors-headers = "*"
+supervisor = "*"
+gunicorn = "*"
+ansible = "*"
+docker = "*"
+docker-compose = "*"
 
 [dev-packages]
 flake8 = "*"

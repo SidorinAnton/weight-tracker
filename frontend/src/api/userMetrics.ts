@@ -14,7 +14,7 @@ export interface IPaginatedUserMetrics extends IPaginatedBaseResult {
 }
 
 export const ApiGetUserMetrics = async (): Promise<IPaginatedUserMetrics> => {
-  const resp = await baseApi("/api/v1/user_metrics/");
+  const resp = await baseApi("/v1/user_metrics/");
   if (!resp) {
     throw Error("No response from 'user_metrics' (get)");
   }
@@ -26,7 +26,7 @@ export const ApiPostUserMetrics = async (data: {
   waist_circumference?: number;
   measurement_date?: string;
 }): Promise<IUserMetrics> => {
-  const resp = await baseApi("/api/v1/user_metrics/", "POST", data);
+  const resp = await baseApi("/v1/user_metrics/", "POST", data);
   if (!resp) {
     throw Error("No response from 'user_metrics' (post)");
   }
@@ -34,7 +34,7 @@ export const ApiPostUserMetrics = async (data: {
 };
 
 export const ApiDeleteUserMetrics = async (metricsId: string | number) => {
-  const resp = await baseApi(`/api/v1/user_metrics/${metricsId}/`, "DELETE");
+  const resp = await baseApi(`/v1/user_metrics/${metricsId}/`, "DELETE");
   if (!resp) {
     throw Error("No response from 'user_metrics' (delete)");
   }

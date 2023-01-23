@@ -1,7 +1,5 @@
 common:
   debug: true
-  login_url:
-  registration_url:
   site_name: http://localhost:8000
 
 database:

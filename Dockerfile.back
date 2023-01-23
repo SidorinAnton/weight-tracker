@@ -1,0 +1,17 @@
+FROM python:3.8.12
+RUN apt-get update && apt-get install -y supervisor
+
+WORKDIR /weight-tracker
+RUN pip install -U pip pipenv
+RUN virtualenv -p python3 env
+COPY Pipfile.lock .
+RUN pipenv requirements > requirements.txt
+RUN /weight-tracker/env/bin/pip install -U -r requirements.txt
+
+COPY backend ./src/
+COPY configs /etc
+COPY configs/weight-tracker.yaml ./configs/
+
+EXPOSE 8000
+
+CMD ["/weight-tracker/env/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

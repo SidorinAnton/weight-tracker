@@ -1,0 +1,30 @@
+- name: Wight-tracker -- Copy
+  hosts: vm-karpov
+  become: true
+
+  tasks:
+    - name: Copy backend
+      copy:
+        src: ./backend
+        dest: /home/anton/weight_tracker/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

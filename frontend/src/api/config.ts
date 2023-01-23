@@ -1,4 +1,5 @@
-export const BASE_URL = "http://localhost:5000";
+// export const BASE_URL = "http://localhost:8000/api";  // dev
+export const BASE_URL = "https://antonsvm.karpovdns.net/api";  // prod
 
 // https://docs.djangoproject.com/en/4.0/ref/csrf/
 function getCookie(name: string) {

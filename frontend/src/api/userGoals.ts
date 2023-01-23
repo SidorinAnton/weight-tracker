@@ -14,7 +14,7 @@ export interface IPaginatedUserGoals extends IPaginatedBaseResult {
 }
 
 export const ApiGetUserGoals = async (): Promise<IPaginatedUserGoals> => {
-  const resp = await baseApi("/api/v1/user_goals/");
+  const resp = await baseApi("/v1/user_goals/");
   if (!resp) {
     throw Error("No response from 'user_metrics' (get)");
   }
@@ -26,7 +26,7 @@ export const ApiPostUserGoals = async (data: {
   goal_type?: string;
   target_date?: string;
 }): Promise<IUserGoals> => {
-  const resp = await baseApi("/api/v1/user_goals/", "POST", data);
+  const resp = await baseApi("/v1/user_goals/", "POST", data);
   if (!resp) {
     throw Error("No response from 'user_metrics' (post)");
   }
@@ -34,7 +34,7 @@ export const ApiPostUserGoals = async (data: {
 };
 
 export const ApiDeleteUserGoals = async (goalsId: string | number) => {
-  const resp = await baseApi(`/api/v1/user_goals/${goalsId}/`, "DELETE");
+  const resp = await baseApi(`/v1/user_goals/${goalsId}/`, "DELETE");
   if (!resp) {
     throw Error("No response from 'user_metrics' (delete)");
   }

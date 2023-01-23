@@ -46,9 +46,28 @@ generate-schema:
 	PYTHONPATH=./backend ./backend/manage.py spectacular --file ./backend/schema.yml
 
 
-# =============== Frontend ===============
+# =============== FRONTEND ===============
 front-start:
 	npm start --prefix $(pwd)/frontend
+
+
+# =============== CERTBOT ===============
+certbot-certonly:
+	docker-compose run --rm certbot certonly -m antonsidorin@list.ru --webroot --webroot-path /var/www/certbot/ --dry-run -d antonsvm.karpovdns.net -d www.antonsvm.karpovdns.net
+
+certbot-renew:
+	docker-compose run --rm certbot renew
+
+
+# =============== ANSIBLE ===============
+play:
+	env/bin/ansible-playbook playbool.yml --ask-become-pass
+
+encrypt:
+	env/bin/ansible-vault encrypt docker-compose.yml inventory configs/weight-tracker.yaml
+
+decrypt:
+	env/bin/ansible-vault decrypt docker-compose.yml inventory configs/weight-tracker.yaml
 
 
 %:

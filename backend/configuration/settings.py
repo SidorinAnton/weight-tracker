@@ -7,26 +7,35 @@ BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
 confuse.core.CONFIG_FILENAME = "weight-tracker.yaml"
 config = confuse.Configuration("weight-tracker", __name__)
-path_to_config = os.path.join(path.dirname(BASE_DIR), "configs", "weight-tracker.yaml")
-if os.path.exists(path_to_config):
-    config.set_file(path_to_config)
+path_to_dev_config = os.path.join(path.dirname(BASE_DIR), "configs", "weight-tracker.dev.yaml")
+path_to_prod_config = os.path.join(path.dirname(BASE_DIR), "configs", "weight-tracker.yaml")
+
+if os.path.exists(path_to_dev_config):
+    config.set_file(path_to_dev_config)
+else:
+    config.set_file(path_to_prod_config)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1i4(1c9a=9@_-2b$u!unh68_bol8#xev*ajc*x#eaz=7a+)_@4"
+SECRET_KEY = config["common"]["secret_key"].get("django-insecure-1i4(1c9a=9@_-2b$u!unh68_bol8#xev*ajc*x#eaz=7a+)_@4")
+
+SITE_NAME = config["common"]["site_name"].get("http://localhost:8000")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config["common"]["debug"].get(True)
+DEBUG = config["common"]["debug"].get(False)
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1"]
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000"]
+CSRF_TRUSTED_ORIGINS = ["https://antonsvm.karpovdns.net"]
+CORS_ORIGIN_WHITELIST = ["https://antonsvm.karpovdns.net"]
 CORS_ALLOW_CREDENTIALS = True
+
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS += ["http://localhost", "http://127.0.0.1"]
+    CORS_ORIGIN_WHITELIST += ["http://localhost:3000", "http://127.0.0.1:3000"]
+
 
 # CSRF_COOKIE_SAMESITE = "Strict"
 # SESSION_COOKIE_SAMESITE = "Strict"
 # CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_HTTPONLY = True
-
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -104,12 +113,34 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {"common": {"class": "logging.Formatter"}},
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "common"},
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+    },
+}
+
+
 LANGUAGE_CODE = "ru-RU"
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+STATIC_ROOT = path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
