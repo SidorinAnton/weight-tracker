@@ -40,6 +40,6 @@
     - name: Docker-compose
       shell:
         chdir: /home/anton/weight-tracker
-        cmd: docker-compose up -d
+        cmd: docker-compose build && docker-compose up -d
 
 
