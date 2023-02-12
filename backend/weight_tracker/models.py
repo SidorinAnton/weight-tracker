@@ -10,12 +10,12 @@ class UserMetrics(models.Model):
         verbose_name_plural = "метрики"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", related_name="metrics")
-    weight = models.DecimalField(default=0, max_digits=10000, decimal_places=2, verbose_name="Вес (кг)")
+    weight = models.DecimalField(default=0, max_digits=12, decimal_places=2, verbose_name="Вес (кг)")
     waist_circumference = models.DecimalField(
         default=None,
         null=True,
         blank=True,
-        max_digits=10000,
+        max_digits=12,
         decimal_places=2,
         verbose_name="Обхват талии",
     )
@@ -35,7 +35,7 @@ class UserGoal(models.Model):
         GLOBAL = ("global", "Глобальная цель")
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", related_name="goals")
-    weight_goal = models.DecimalField(default=0, max_digits=10000, decimal_places=2, verbose_name="Ожидаемый вес (кг)")
+    weight_goal = models.DecimalField(default=0, max_digits=12, decimal_places=2, verbose_name="Ожидаемый вес (кг)")
     goal_type = models.CharField(max_length=255, choices=GoalType.choices, verbose_name="Тип цели")
     target_date = models.DateField(
         default=datetime.date.today,
