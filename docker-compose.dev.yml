@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: weight_tracker
+      POSTGRES_USER: weight_tracker
+      POSTGRES_DB: weight_tracker
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: PGPASSWORD=weight_tracker psql -U weight_tracker -p 5432 -h 127.0.0.1 -c 'select 1' >/dev/null
+
+
+volumes:
+  postgres:

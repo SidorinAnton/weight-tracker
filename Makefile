@@ -23,7 +23,7 @@ check-style: flake8-check isort-check
 
 # Start databases
 start-db:
-	docker-compose up -d
+	docker-compose -f docker-compose.dev.yml up -d
 
 
 # Run tests
