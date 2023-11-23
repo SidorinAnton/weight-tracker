@@ -15,3 +15,53 @@
 - _Добавление фотографий_
 - _Нотификация (напоминание)_
 - ...
+
+### Запустить локально
+
+Зайти в `frontend/src/api/config.ts` и поменять **BASE_URL**.
+
+(TODO когда-нибудь посмотреть, можно ли как-нибудь это делать через вебпак)
+
+```shell
+make start-db
+```
+
+```shell
+make runserver
+```
+
+```shell
+make front-start
+```
+
+### Установить зависимости
+
+#### Frontend
+
+```shell
+cd frontend
+```
+
+```shell
+npm i
+```
+
+#### Backend
+
+```shell
+pipenv install --dev
+```
+
+```shell
+ln -s $(pipenv --venv) venv
+```
+
+```shell
+pipenv shell
+```
+
+Удалить окружение:
+
+```shell
+pipenv --rm
+```
