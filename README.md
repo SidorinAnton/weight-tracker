@@ -20,9 +20,17 @@
 
 ### Деплой
 
-Запускаем локально `make play` (На сервере должен быть ssh ключ, fingerprint и установлен докер)
+Запускаем локально `make play` (На сервере должен быть ssh ключ, fingerprint для гитхаба и установлен докер).
 
-Для обновления сертфиката нужно ввести `certbot-update`
+При первом запуске надо будет на сервере удалить в конфиге nginx'а второй блок server (для 443)
+(`vi configs/nginx/w-tracker-app.conf`).
+
+Затем `docker-compose up -d`, потом `make certbot-certonly-dry`, потом `make certbot-certonly`.
+
+Дальше `vi configs/nginx/w-tracker-app.conf` и вставить удаленный блок.
+Затем `docker-compose restart`.
+
+Для обновления сертфиката нужно ввести `make certbot-update`
 
 ### Запустить локально
 
