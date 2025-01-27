@@ -59,18 +59,22 @@ certbot-certonly:
 	docker-compose run --rm certbot certonly -m antonsidorin@list.ru --webroot --webroot-path /var/www/certbot/ -d antonsvm.karpovdns.net -d www.antonsvm.karpovdns.net
 
 certbot-renew:
-	docker-compose run --rm certbot renew
+	docker-compose run --rm certbot renew 
 
+certbot-restart:
+	docker-compose restart
+
+certbot-update: certbot-renew certbot-restart
 
 # =============== ANSIBLE ===============
 play:
-	env/bin/ansible-playbook playbool.yml --ask-become-pass
+	ansible-playbook playbool.yml --ask-become-pass
 
 encrypt:
-	env/bin/ansible-vault encrypt docker-compose.yml inventory configs/weight-tracker.yaml
+	ansible-vault encrypt docker-compose.yml inventory configs/weight-tracker.yaml
 
 decrypt:
-	env/bin/ansible-vault decrypt docker-compose.yml inventory configs/weight-tracker.yaml
+	ansible-vault decrypt docker-compose.yml inventory configs/weight-tracker.yaml
 
 
 %:

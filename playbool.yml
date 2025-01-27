@@ -1,6 +1,7 @@
 - name: Wight-tracker
   hosts: vm-karpov
   become: true
+  become_user: anton
 
   tasks:
     - name: Clone repo
@@ -17,7 +18,7 @@
     - name: Decrypt files
       shell:
         chdir: /home/anton/weight-tracker
-        cmd: ansible-vault decrypt docker-compose.yml inventory configs/weight-tracker.yaml
+        cmd: make decrypt
 
 #    - name: Get details of all images
 #      docker_host_info:
